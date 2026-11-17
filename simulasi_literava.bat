@@ -10,32 +10,23 @@ set ANDROID_USER_HOME=D:\Android\.android
 set ANDROID_HOME=D:\Android\Sdk
 set PATH=%ANDROID_HOME%\platform-tools;%PATH%
 
-echo.
-echo [1/3] Menyalakan jendela emulator Pixel_Codex...
+echo [1/4] Membersihkan berkas kunci lama (Auto-unlock AVD)...
+del /f /q /s "D:\Android\.android\avd\Pixel_Codex.avd\*.lock" >nul 2>&1
+taskkill /f /im adb.exe >nul 2>&1
+
+echo [2/4] Menyalakan emulator Pixel_Codex...
 start "" "%ANDROID_HOME%\emulator\emulator.exe" -avd Pixel_Codex
 
-echo [2/3] Menunggu sistem Android selesai booting...
+echo [3/4] Menghubungkan ke Android ADB (mohon tunggu beberapa detik)...
 adb.exe wait-for-device
 
-:wait_boot
-for /f "tokens=*" %%a in ('adb.exe shell getprop sys.boot_completed 2^>nul') do set BOOT=%%a
-if not "%BOOT%"=="1" (
-    timeout /t 2 /nobreak > nul
-    goto wait_boot
-)
-
-echo Android sudah siap!
-timeout /t 2 /nobreak > nul
-
-echo [3/3] Membuka aplikasi Literava di layar HP virtual...
+echo [4/4] Sistem Android terhubung! Membuka Literava...
+timeout /t 5 /nobreak > nul
 adb.exe shell am start -n com.literava.literava/com.literava.literava.MainActivity
 
 echo.
 echo ========================================================
-echo    Simulasi BERHASIL! 
-echo    Aplikasi Literava sudah terbuka di layar emulator Anda.
+echo    SUKSES! Aplikasi Literava sudah tampil di layar Anda.
 echo ========================================================
-echo Silakan berinteraksi langsung di jendela emulator.
-echo Anda boleh menutup jendela hitam ini sekarang.
-echo.
+echo Anda boleh menutup jendela terminal ini.
 pause
