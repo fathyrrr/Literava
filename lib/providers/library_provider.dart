@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/book.dart';
 import '../models/genre_lane.dart';
 import '../models/book_note.dart';
+import '../models/book_highlight.dart';
 import '../services/library_service.dart';
 import '../services/storage_service.dart';
 
@@ -19,6 +20,7 @@ class LibraryProvider extends ChangeNotifier {
   String _ambientAudioType = 'Gesekan Kertas & Bisikan Puisi';
   Set<String> _bookmarkedBookIds = {};
   List<BookNote> _notes = [];
+  List<BookHighlight> _highlights = [];
 
   LibraryProvider(this._storageService) {
     _activeBook = LibraryService.defaultBook;
@@ -28,6 +30,7 @@ class LibraryProvider extends ChangeNotifier {
   void _loadFromStorage() {
     _bookmarkedBookIds = _storageService.getBookmarks().toSet();
     _notes = _storageService.getNotes();
+    _highlights = _storageService.getHighlights();
     _isLampActive = _storageService.getLampState();
     _isQuietMode = _storageService.getQuietMode();
     _selectedLaneId = _storageService.getSelectedLane();
@@ -45,6 +48,7 @@ class LibraryProvider extends ChangeNotifier {
   bool get isPlayingAmbientAudio => _isPlayingAmbientAudio;
   String get ambientAudioType => _ambientAudioType;
   List<BookNote> get notes => _notes;
+  List<BookHighlight> get highlights => _highlights;
   List<GenreLane> get allLanes => LibraryService.lanes;
   List<Book> get allBooks => LibraryService.books;
 
@@ -140,6 +144,51 @@ class LibraryProvider extends ChangeNotifier {
   void deleteNote(String noteId) {
     _notes.removeWhere((n) => n.id == noteId);
     _storageService.saveNotes(_notes);
+    notifyListeners();
+  }
+
+  // Highlights
+  List<BookHighlight> getHighlightsForBook(String bookId) {
+    return _highlights.where((h) => h.bookId == bookId).toList();
+  }
+
+  void addHighlight({
+    required String bookId,
+    required String chapterId,
+    required String text,
+    String note = '',
+    required int colorHex,
+    bool alsoAddToNotes = true,
+    String bookTitle = '',
+    int pageNumber = 1,
+  }) {
+    final newHighlight = BookHighlight(
+      id: 'hl_${DateTime.now().millisecondsSinceEpoch}',
+      bookId: bookId,
+      chapterId: chapterId,
+      text: text,
+      note: note,
+      colorHex: colorHex,
+      createdAt: DateTime.now(),
+    );
+    _highlights.insert(0, newHighlight);
+    _storageService.saveHighlights(_highlights);
+
+    if (alsoAddToNotes) {
+      addNote(
+        bookId,
+        bookTitle.isNotEmpty ? bookTitle : _activeBook.title,
+        note.isNotEmpty ? '“$text”\n\nCatatan: $note' : '“$text”',
+        pageNumber,
+      );
+    } else {
+      notifyListeners();
+    }
+  }
+
+  void deleteHighlight(String highlightId) {
+    _highlights.removeWhere((h) => h.id == highlightId);
+    _storageService.saveHighlights(_highlights);
     notifyListeners();
   }
 

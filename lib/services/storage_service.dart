@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/book_note.dart';
+import '../models/book_highlight.dart';
 
 class StorageService {
   static const String _keyBookmarks = 'literava_bookmarks';
   static const String _keyNotes = 'literava_notes';
+  static const String _keyHighlights = 'literava_highlights';
   static const String _keyLamp = 'literava_lamp_active';
   static const String _keyQuietMode = 'literava_quiet_mode';
   static const String _keySelectedLane = 'literava_selected_lane';
@@ -52,6 +54,23 @@ class StorageService {
   Future<void> saveNotes(List<BookNote> notes) async {
     final raw = jsonEncode(notes.map((n) => n.toJson()).toList());
     await _prefs.setString(_keyNotes, raw);
+  }
+
+  // Highlights
+  List<BookHighlight> getHighlights() {
+    final raw = _prefs.getString(_keyHighlights);
+    if (raw == null || raw.isEmpty) return [];
+    try {
+      final List<dynamic> list = jsonDecode(raw) as List<dynamic>;
+      return list.map((item) => BookHighlight.fromJson(item as Map<String, dynamic>)).toList();
+    } catch (_) {
+      return [];
+    }
+  }
+
+  Future<void> saveHighlights(List<BookHighlight> highlights) async {
+    final raw = jsonEncode(highlights.map((h) => h.toJson()).toList());
+    await _prefs.setString(_keyHighlights, raw);
   }
 
   // Lamp State

@@ -6,6 +6,7 @@ import '../../../models/book.dart';
 import '../../../providers/library_provider.dart';
 import '../../../widgets/custom_toast.dart';
 import '../dialogs/notes_dialog.dart';
+import 'dust_motes_overlay.dart';
 
 class BookShowcaseCard extends StatelessWidget {
   final Book book;
@@ -35,24 +36,29 @@ class BookShowcaseCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(22),
         child: Column(
           children: [
-            // Ambient desk glow container
-            Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    isLampOn
-                        ? AppColors.primary.withValues(alpha: 0.12)
-                        : Colors.transparent,
-                    AppColors.surfaceContainerLow.withValues(alpha: 0.4),
-                    AppColors.surfaceContainerLowest,
-                  ],
+            // Ambient desk glow container with dust motes
+            Stack(
+              children: [
+                Positioned.fill(
+                  child: DustMotesOverlay(isLampOn: isLampOn),
                 ),
-              ),
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-              child: Column(
-                children: [
+                Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        isLampOn
+                            ? AppColors.primary.withValues(alpha: 0.12)
+                            : Colors.transparent,
+                        AppColors.surfaceContainerLow.withValues(alpha: 0.4),
+                        AppColors.surfaceContainerLowest,
+                      ],
+                    ),
+                  ),
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+                  child: Column(
+                    children: [
                   // Call Number Tag
                   Align(
                     alignment: Alignment.centerRight,
@@ -227,6 +233,8 @@ class BookShowcaseCard extends StatelessWidget {
                 ],
               ),
             ),
+          ],
+        ),
 
             // Quick Desk Micro-Actions
             Container(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../../core/theme/app_colors.dart';
@@ -45,6 +46,7 @@ class MoodFilterPills extends StatelessWidget {
 
               return GestureDetector(
                 onTap: () {
+                  HapticFeedback.selectionClick();
                   provider.selectMood(mood['id']!);
                 },
                 child: AnimatedContainer(

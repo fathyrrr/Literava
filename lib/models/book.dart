@@ -1,3 +1,5 @@
+import 'book_chapter.dart';
+
 class Book {
   final String id;
   final String title;
@@ -28,6 +30,7 @@ class Book {
   final String translator;
   final String copyright;
   final String pdfSize;
+  final List<BookChapter> chapters;
 
   const Book({
     required this.id,
@@ -59,7 +62,20 @@ class Book {
     this.translator = 'Tim Konsorsium Klasika',
     this.copyright = 'Domain Publik (Public Domain)',
     this.pdfSize = '12.4 MB',
+    this.chapters = const [],
   });
+
+  List<BookChapter> get effectiveChapters {
+    if (chapters.isNotEmpty) return chapters;
+    return [
+      BookChapter(
+        id: '${id}_ch1',
+        chapterNumber: excerptBook.isNotEmpty ? excerptBook : 'Bab I',
+        title: excerptTitle.isNotEmpty ? excerptTitle : title,
+        content: excerptText,
+      ),
+    ];
+  }
 
   Map<String, dynamic> toMap() {
     return {
