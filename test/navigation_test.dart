@@ -65,7 +65,7 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 500));
 
-    expect(find.text('Di Tepi Sungai Hran (Pagi Hari)'), findsOneWidget);
+    expect(find.text('Taman Eden'), findsOneWidget);
     expect(find.byIcon(Icons.format_size), findsOneWidget);
   });
 }

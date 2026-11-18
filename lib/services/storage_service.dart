@@ -19,7 +19,7 @@ class StorageService {
 
   // Bookmarks
   List<String> getBookmarks() {
-    return _prefs.getStringList(_keyBookmarks) ?? ['book_meditations'];
+    return _prefs.getStringList(_keyBookmarks) ?? ['book_dunia_sophie'];
   }
 
   Future<void> setBookmarks(List<String> bookmarks) async {
@@ -34,11 +34,11 @@ class StorageService {
       return [
         BookNote(
           id: 'note_initial_1',
-          bookId: 'book_meditations',
-          bookTitle: 'Meditations (Renungan Jiwa)',
+          bookId: 'book_dunia_sophie',
+          bookTitle: 'Dunia Sophie',
           content:
-              '“Kamu memiliki kekuasaan atas pikiranmu — bukan peristiwa di luar. Sadarilah ini, dan kamu akan menemukan kekuatan sejati.”',
-          pageNumber: 42,
+              '“Satu-satunya hal yang kita butuhkan untuk menjadi filosof yang baik adalah kemampuan untuk merasa takjub.”',
+          pageNumber: 15,
           createdAt: DateTime.now().subtract(const Duration(hours: 3)),
         ),
       ];

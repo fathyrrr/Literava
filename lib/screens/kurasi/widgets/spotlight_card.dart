@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../providers/library_provider.dart';
 import '../../../services/library_service.dart';
+import '../../../widgets/book_cover_image.dart';
 
 class SpotlightCard extends StatelessWidget {
   const SpotlightCard({super.key});
@@ -54,16 +55,10 @@ class SpotlightCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    child: Image.network(
-                      featuredBook.coverImageUrl,
+                    child: BookCoverImage(
+                      imageUrl: featuredBook.coverImageUrl,
                       fit: BoxFit.cover,
-                      errorBuilder: (_, _, _) => Container(
-                        color: const Color(0xFFA34E1C),
-                        padding: const EdgeInsets.all(6),
-                        child: const Center(
-                          child: Icon(Icons.menu_book, color: Colors.white, size: 24),
-                        ),
-                      ),
+                      fallbackColor: const Color(0xFFA34E1C),
                     ),
                   ),
                 ),

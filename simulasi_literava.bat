@@ -22,7 +22,12 @@ echo [3/4] Menunggu sistem Android selesai booting...
 adb.exe wait-for-device
 powershell -NoProfile -Command "while ((adb shell getprop sys.boot_completed 2>$null).Trim() -ne '1') { Start-Sleep -Seconds 2 }"
 
-echo [4/4] Sistem Android siap! Membuka Literava...
+echo [4/5] Memasang pembaruan APK Literava ke emulator...
+if exist "build\app\outputs\flutter-apk\app-debug.apk" (
+    adb.exe install -r "build\app\outputs\flutter-apk\app-debug.apk"
+)
+
+echo [5/5] Sistem Android siap! Membuka Literava...
 adb.exe shell input keyevent 3
 timeout /t 2 /nobreak > nul
 adb.exe shell am start -n com.literava.literava/com.literava.literava.MainActivity

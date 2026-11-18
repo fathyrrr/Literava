@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../models/book.dart';
+import '../../../widgets/book_cover_image.dart';
 
 class BookGridCard extends StatelessWidget {
   final Book book;
@@ -55,10 +56,11 @@ class BookGridCard extends StatelessWidget {
                       end: Alignment.bottomRight,
                     ),
                   ),
-                  child: Image.network(
-                    book.coverImageUrl,
+                  child: BookCoverImage(
+                    imageUrl: book.coverImageUrl,
                     fit: BoxFit.cover,
-                    errorBuilder: (_, _, _) => Center(
+                    fallbackColor: Color(book.spineColor1),
+                    fallbackChild: Center(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(

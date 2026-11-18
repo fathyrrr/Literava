@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../models/book.dart';
 import '../../../providers/library_provider.dart';
+import '../../../widgets/book_cover_image.dart';
 import '../../../widgets/custom_toast.dart';
 
 class BookInspectCard extends StatelessWidget {
@@ -92,17 +93,15 @@ class BookInspectCard extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            child: Image.network(
-                              book.coverImageUrl,
+                            child: BookCoverImage(
+                              imageUrl: book.coverImageUrl,
                               fit: BoxFit.cover,
-                              errorBuilder: (_, _, _) => Container(
-                                color: Color(book.spineColor1),
-                                child: Center(
-                                  child: Icon(
-                                    Icons.auto_stories,
-                                    color: Color(book.ribbonColor),
-                                    size: 32,
-                                  ),
+                              fallbackColor: Color(book.spineColor1),
+                              fallbackChild: Center(
+                                child: Icon(
+                                  Icons.auto_stories,
+                                  color: Color(book.ribbonColor),
+                                  size: 32,
                                 ),
                               ),
                             ),

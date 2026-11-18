@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../models/book.dart';
 import '../../../providers/library_provider.dart';
+import '../../../widgets/book_cover_image.dart';
 import '../../../widgets/custom_toast.dart';
 import '../dialogs/notes_dialog.dart';
 import 'dust_motes_overlay.dart';
@@ -116,17 +117,15 @@ class BookShowcaseCard extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            child: Image.network(
-                              book.coverImageUrl,
+                            child: BookCoverImage(
+                              imageUrl: book.coverImageUrl,
                               fit: BoxFit.cover,
-                              errorBuilder: (_, _, _) => Container(
-                                color: const Color(0xFF6E432A),
-                                child: const Center(
-                                  child: Icon(
-                                    Icons.menu_book,
-                                    size: 64,
-                                    color: Color(0xFFFDE68A),
-                                  ),
+                              fallbackColor: const Color(0xFF6E432A),
+                              fallbackChild: const Center(
+                                child: Icon(
+                                  Icons.menu_book,
+                                  size: 64,
+                                  color: Color(0xFFFDE68A),
                                 ),
                               ),
                             ),
